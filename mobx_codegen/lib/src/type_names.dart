@@ -32,11 +32,12 @@ class LibraryScopedNameFinder {
       _namesByElement[element] = element.name!;
     }
 
+    final imports = library.imports.expand((import) => [import, ...import.importedLibrary!.imports]);
     // Reverse each import's export namespace so we can map elements to their
     // library-local names. Note that the definedNames include a prefix if there
     // is one.
     // ignore: deprecated_member_use
-    for (final import in library.imports) {
+    for (final import in imports) {
       for (final entry in import.namespace.definedNames.entries) {
         _namesByElement[entry.value] = entry.key;
       }

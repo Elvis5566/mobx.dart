@@ -72,6 +72,22 @@ class StoreClassVisitor extends SimpleElementVisitor {
     }
     // if the class is annotated to generate toString() method we add the information to the _storeTemplate
     _storeTemplate.generateToString = hasGeneratedToString(options, element);
+
+    element.allSupertypes.forEach((element) {
+      if (element.allSupertypes.any((element) => element.name == 'Store')) {
+        element.methods
+            .forEach(visitMethodElement);
+
+        element.accessors
+            .where((element) => element.isSetter)
+            .map((e) => e.variable as FieldElement)
+            .forEach(visitFieldElement);
+
+        element.accessors
+            .where((element) => element.isGetter)
+            .forEach(visitPropertyAccessorElement);
+      }
+    });
   }
 
   @override
