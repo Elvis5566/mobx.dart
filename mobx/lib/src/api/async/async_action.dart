@@ -40,7 +40,7 @@ class AsyncAction {
   R _run<R>(Zone self, ZoneDelegate parent, Zone zone, R Function() f) {
     final actionInfo = _actions.startAction(name: '${_actions.name}(Zone.run)');
     try {
-      final result = parent.run(zone, f);
+      final result = self.parent!.run(f);
       return result;
     } finally {
       _actions.endAction(actionInfo);
@@ -54,7 +54,7 @@ class AsyncAction {
     final actionInfo =
     _actions.startAction(name: '${_actions.name}(Zone.runUnary)');
     try {
-      final result = parent.runUnary(zone, f, a);
+      final result = self.parent!.runUnary(f, a);
       return result;
     } finally {
       _actions.endAction(actionInfo);
